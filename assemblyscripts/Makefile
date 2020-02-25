@@ -1,6 +1,5 @@
-all:
-	@rm -rf build/
-	@npm run asbuild:optimized
+all: base64
 
-debug:
-	@npm run asbuild:untouched
+base64:
+	@npm run asbuild:base64-untouched
+	@npm run asbuild:base64-optimized
