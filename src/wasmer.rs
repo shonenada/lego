@@ -1,7 +1,7 @@
 use wasmer_runtime::{error, instantiate, Array, Func, WasmPtr};
 use wasmer_wasi::{generate_import_object_from_state, state::WasiState, WasiVersion};
 
-const WASI_VERSION: WasiVersion = WasiVersion::Snapshot0;
+const WASI_VERSION: WasiVersion = WasiVersion::Snapshot1;
 
 pub fn b64encode(raw: &str) -> String {
     let state = WasiState::new("Base64").build().unwrap();
