@@ -17,5 +17,7 @@ Cargo.lock
 /target
 #**/*.rs.bk
 
+*.wasm
+
 build/
 node_modules/
