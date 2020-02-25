@@ -7,6 +7,7 @@ extern crate rocket_contrib;
 extern crate serde_derive;
 
 mod server;
+mod types;
 mod wasmer;
 
 use crate::server::start_server;
