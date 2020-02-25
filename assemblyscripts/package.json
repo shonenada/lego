@@ -1,15 +1,13 @@
 {
   "scripts": {
-    "asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --validate --sourceMap --debug --use abort=wasiabort --runtime stub",
-    "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --validate -O3 --use abort=wasiabort --runtime stub",
-    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+    "asbuild:base64-untouched": "asc assembly/base64/index.ts -b build/base64-untouched.wasm -t build/base64-untouched.wat --validate --sourceMap --debug --use abort=wasiabort --runtime stub",
+    "asbuild:base64-optimized": "asc assembly/base64/index.ts -b build/base64.wasm --validate -O3 --use abort=wasiabort --runtime stub",
     "test": "node tests"
   },
   "dependencies": {
-    "@assemblyscript/loader": "^0.9.2"
-  },
-  "devDependencies": {
-    "as-wasi": "0.0.1",
-    "assemblyscript": "^0.9.2"
+    "@assemblyscript/loader": "^0.9.2",
+    "assemblyscript": "^0.9.2",
+    "assemblyscript-json": "^0.3.0",
+    "as-wasi": "0.0.1"
   }
 }

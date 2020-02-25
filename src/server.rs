@@ -1,26 +1,14 @@
 use rocket_contrib::json::{Json, JsonValue};
 
-use crate::wasmer::b64encode;
+use crate::types::OutgoingRequest;
+use crate::wasmer::process_outgoing;
 
-#[derive(Deserialize)]
-struct OutgoingRequest {
-    text: String,
-    keyword: String,
-    username: String,
-}
-
-#[post("/labs/wasm/outgoing", format = "json", data = "<message>")]
-fn outgoing(message: Json<OutgoingRequest>) -> JsonValue {
+#[post("/labs/wasm/outgoing/<name>", format = "json", data = "<message>")]
+fn outgoing(name: String, message: Json<OutgoingRequest>) -> JsonValue {
     let message = message.0;
-    let raw_text = message.text;
-    let kw = message.keyword;
-    let (_, text) = raw_text.split_at(kw.len() + 1);
-    let encoded = b64encode(text);
+    let rv = process_outgoing(name, message);
     json!({
-        "text": format!("@{}, Base64.encode(\"{}\") = `{}`",
-                        message.username,
-                        text,
-                        encoded),
+        "text": rv,
     })
 }
 
