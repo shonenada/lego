@@ -1,17 +1,22 @@
-use crate::types::OutgoingRequest;
+use lazy_static::lazy_static;
 use log::debug;
+use std::env;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 use wasmer_runtime::{instantiate, Array, Func, WasmPtr};
 use wasmer_wasi::{generate_import_object_from_state, state::WasiState, WasiVersion};
 
+use crate::types::OutgoingRequest;
+
 const WASI_VERSION: WasiVersion = WasiVersion::Snapshot1;
-const WASM_ROOT: &'static str = env!("LEGO_WASM_ROOT");
+lazy_static! {
+    static ref WASM_ROOT: String = env::var("LEGO_WASM_ROOT").unwrap();
+}
 
 pub fn load_wasm(path: String) -> Vec<u8> {
-    debug!("Load WASM file in {}/{}.wasm", WASM_ROOT, path);
-    let wasm_file = File::open(format!("{}/{}.wasm", WASM_ROOT, path)).expect("Wasm file");
+    debug!("Load WASM file in {}/{}.wasm", *WASM_ROOT, path);
+    let wasm_file = File::open(format!("{}/{}.wasm", *WASM_ROOT, path)).expect("Wasm file");
     let mut reader = BufReader::new(wasm_file);
     let mut data = Vec::new();
     reader.read_to_end(&mut data).expect("Failed to load wasm");
