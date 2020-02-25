@@ -1,0 +1,22 @@
+[Unit]
+Description=Lego
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/lego.pid
+EnvironmentFile=/etc/default/lego
+StandardOutput=syslog+console
+StandardError=syslog+console
+SyslogIdentifier=lego
+TasksMax=infinity
+LimitNOFILE=infinity
+LimitMEMLOCK=infinity
+Restart=on-failure
+ExecStart=/opt/lego/lego
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target
