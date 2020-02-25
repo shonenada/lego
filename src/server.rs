@@ -1,7 +1,7 @@
 use rocket_contrib::json::{Json, JsonValue};
 
-use crate::wasmer::process_outgoing;
 use crate::types::OutgoingRequest;
+use crate::wasmer::process_outgoing;
 
 #[post("/labs/wasm/outgoing/<name>", format = "json", data = "<message>")]
 fn outgoing(name: String, message: Json<OutgoingRequest>) -> JsonValue {
