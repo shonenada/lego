@@ -1,9 +1,10 @@
 use lazy_static::lazy_static;
-use log::debug;
 use std::env;
 use std::fs::File;
+use std::sync::RwLock;
 use std::io::prelude::*;
 use std::io::BufReader;
+use std::collections::HashMap;
 use wasmer_runtime::{instantiate, Array, Func, WasmPtr};
 use wasmer_wasi::{generate_import_object_from_state, state::WasiState, WasiVersion};
 
@@ -12,15 +13,26 @@ use crate::types::OutgoingRequest;
 const WASI_VERSION: WasiVersion = WasiVersion::Snapshot1;
 lazy_static! {
     static ref WASM_ROOT: String = env::var("LEGO_WASM_ROOT").unwrap();
+    static ref WASM_CACHE: RwLock<HashMap<String, Vec<u8>>> = RwLock::new(HashMap::new());
 }
 
 pub fn load_wasm(path: String) -> Vec<u8> {
-    debug!("Load WASM file in {}/{}.wasm", *WASM_ROOT, path);
-    let wasm_file = File::open(format!("{}/{}.wasm", *WASM_ROOT, path)).expect("Wasm file");
-    let mut reader = BufReader::new(wasm_file);
-    let mut data = Vec::new();
-    reader.read_to_end(&mut data).expect("Failed to load wasm");
-    data
+    let maybe_data = {
+        let cache = WASM_CACHE.read().unwrap();
+        cache.get(&path).cloned()
+    };
+
+    if let Some(data) = maybe_data {
+        data.clone()
+    } else {
+        info!("Load WASM file in {}/{}.wasm", *WASM_ROOT, path);
+        let wasm_file = File::open(format!("{}/{}.wasm", *WASM_ROOT, path)).expect("Wasm file");
+        let mut reader = BufReader::new(wasm_file);
+        let mut data = Vec::new();
+        reader.read_to_end(&mut data).expect("Failed to load wasm");
+        WASM_CACHE.write().unwrap().insert(path, data.clone());
+        data
+    }
 }
 
 pub fn process_outgoing(path: String, req: OutgoingRequest) -> String {
