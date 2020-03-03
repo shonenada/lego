@@ -1,0 +1,13 @@
+[package]
+name = "llvm"
+version = "0.1.0"
+authors = ["shonenada <shonenada@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+wasmer-runtime = { git = "https://github.com/wasmerio/wasmer.git" }
+wasmer-runtime-core = { git = "https://github.com/wasmerio/wasmer.git" }
+wasmer-llvm-backend = { git = "https://github.com/wasmerio/wasmer.git" }
+wasmer-wasi = { git = "https://github.com/wasmerio/wasmer.git" }
