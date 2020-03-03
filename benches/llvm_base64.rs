@@ -18,7 +18,6 @@ mod tests {
     #[allow(dead_code)]
     fn bench_llvm_compile(b: &mut Bencher) {
         b.iter(|| {
-            let state = WasiState::new("LegoOutgoing").build().unwrap();
             let compiler = &LLVMCompiler::new();
             let _module = wasmer_runtime_core::compile_with(BASE64_WASM, compiler).expect("should compile");
         });
@@ -26,11 +25,11 @@ mod tests {
 
     #[bench]
     fn bench_llvm_instance(b: &mut Bencher) {
-        let state = WasiState::new("LegoOutgoing").build().unwrap();
         let compiler = &LLVMCompiler::new();
         let module = wasmer_runtime_core::compile_with(BASE64_WASM, compiler).expect("should compile");
-        let import_object = generate_import_object_from_state(state, WASI_VERSION);
         b.iter(|| {
+            let state = WasiState::new("LegoOutgoing").build().unwrap();
+            let import_object = generate_import_object_from_state(state, WASI_VERSION);
             let _instance = module
                 .instantiate(&import_object)
                 .expect("should instantiate");
@@ -83,7 +82,7 @@ mod tests {
     }
 
     #[bench]
-    fn bench_base64encode(b: &mut Bencher) {
+    fn bench_llvm_base64encode(b: &mut Bencher) {
         let state = WasiState::new("LegoOutgoing").build().unwrap();
         let compiler = &LLVMCompiler::new();
         let module = wasmer_runtime_core::compile_with(BASE64_WASM, compiler).expect("should compile");
