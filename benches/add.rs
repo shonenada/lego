@@ -1,5 +1,4 @@
 #![feature(test)]
-
 extern crate test;
 
 use wasmer_runtime::{instantiate, imports, Func};
