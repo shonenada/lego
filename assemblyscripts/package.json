@@ -1,5 +1,8 @@
 {
   "scripts": {
+    "asbuild:helloworld-untouched": "asc assembly/helloworld/index.ts -b build/helloworld-untouched.wasm -t build/helloworld-untouched.wat --validate --sourceMap --debug --use abort=wasiabort --runtime stub",
+    "asbuild:helloworld-optimized": "asc assembly/helloworld/index.ts -b build/helloworld.wasm --validate -O3 --use abort=wasiabort --runtime stub",
+
     "asbuild:base64-untouched": "asc assembly/base64/index.ts -b build/base64-untouched.wasm -t build/base64-untouched.wat --validate --sourceMap --debug --use abort=wasiabort --runtime stub",
     "asbuild:base64-optimized": "asc assembly/base64/index.ts -b build/base64.wasm --validate -O3 --use abort=wasiabort --runtime stub",
     "test": "node tests"

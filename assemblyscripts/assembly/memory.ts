@@ -1,5 +1,6 @@
 let memory = new ArrayBuffer(1024);
-export function getMemoryPtr(): usize {
+
+export function memory_ptr(): usize {
     return changetype<usize>(memory);
 }
 
