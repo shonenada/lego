@@ -78,7 +78,7 @@ pub fn post_request(name: String, data: Data) -> String {
     let instance = instantiate_wasm(name);
 
     let mut buffer: Vec<u8> = Vec::new();
-    data.stream_to(&mut buffer);
+    data.stream_to(&mut buffer).expect("Read stream");
 
     // Lets get the context and memory of our Wasm Instance
     let wasm_instance_context = instance.context();

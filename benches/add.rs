@@ -1,7 +1,7 @@
 #![feature(test)]
 extern crate test;
 
-use wasmer_runtime::{instantiate, imports, Func};
+use wasmer_runtime::{imports, instantiate, Func};
 
 static WASM: &'static [u8] = include_bytes!("../src/wasm/add.wasm");
 

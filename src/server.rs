@@ -1,7 +1,5 @@
 use rocket::data::Data;
 use rocket_contrib::json::JsonValue;
-use serde::{Deserialize, Serialize};
-use wasmer_runtime::{imports, instantiate, Func};
 
 use crate::wasmer::{get_request, post_request};
 

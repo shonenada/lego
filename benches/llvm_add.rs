@@ -1,8 +1,8 @@
 #![feature(test)]
 extern crate test;
 
-use wasmer_runtime_core::{import::ImportObject, Func};
 use wasmer_llvm_backend::LLVMCompiler;
+use wasmer_runtime_core::{import::ImportObject, Func};
 
 static ADD_WASM: &'static [u8] = include_bytes!("../src/wasm/add.wasm");
 
@@ -17,7 +17,8 @@ mod tests {
     fn bench_llvm_ompile(b: &mut Bencher) {
         b.iter(|| {
             let compiler = &LLVMCompiler::new();
-            let _module = wasmer_runtime_core::compile_with(ADD_WASM, compiler).expect("should compile");
+            let _module =
+                wasmer_runtime_core::compile_with(ADD_WASM, compiler).expect("should compile");
         });
     }
 
@@ -26,7 +27,9 @@ mod tests {
         let compiler = &LLVMCompiler::new();
         let module = wasmer_runtime_core::compile_with(ADD_WASM, compiler).expect("should compile");
         b.iter(|| {
-            let _instance = module.instantiate(&ImportObject::new()).expect("should instantiate");
+            let _instance = module
+                .instantiate(&ImportObject::new())
+                .expect("should instantiate");
         });
     }
 
@@ -34,7 +37,9 @@ mod tests {
     fn bench_llvm_get_add(b: &mut Bencher) {
         let compiler = &LLVMCompiler::new();
         let module = wasmer_runtime_core::compile_with(ADD_WASM, compiler).expect("should compile");
-        let instance = module.instantiate(&ImportObject::new()).expect("should instantiate");
+        let instance = module
+            .instantiate(&ImportObject::new())
+            .expect("should instantiate");
         b.iter(|| {
             let _add: Func<(i32, i32), i32> = instance.func("add").unwrap();
         });
@@ -44,7 +49,9 @@ mod tests {
     fn bench_llvm_add(b: &mut Bencher) {
         let compiler = &LLVMCompiler::new();
         let module = wasmer_runtime_core::compile_with(ADD_WASM, compiler).expect("should compile");
-        let instance = module.instantiate(&ImportObject::new()).expect("should instantiate");
+        let instance = module
+            .instantiate(&ImportObject::new())
+            .expect("should instantiate");
         let add: Func<(i32, i32), i32> = instance.func("add").unwrap();
         b.iter(|| {
             let result = add.call(5, 5).unwrap();
