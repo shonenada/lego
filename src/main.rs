@@ -4,12 +4,11 @@ extern crate rocket;
 #[macro_use]
 extern crate rocket_contrib;
 #[macro_use]
-extern crate serde_derive;
-#[macro_use]
 extern crate log;
 
+extern crate serde_derive;
+
 mod server;
-mod types;
 mod wasmer;
 
 use crate::server::start_server;

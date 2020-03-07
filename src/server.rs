@@ -1,17 +1,28 @@
-use rocket_contrib::json::{Json, JsonValue};
+use rocket::data::Data;
+use rocket_contrib::json::JsonValue;
+use serde::{Deserialize, Serialize};
+use wasmer_runtime::{imports, instantiate, Func};
 
-use crate::types::OutgoingRequest;
-use crate::wasmer::process_outgoing;
+use crate::wasmer::{get_request, post_request};
 
-#[post("/labs/wasm/outgoing/<name>", format = "json", data = "<message>")]
-fn outgoing(name: String, message: Json<OutgoingRequest>) -> JsonValue {
-    let message = message.0;
-    let rv = process_outgoing(name, message);
+#[get("/<name>")]
+fn process_get(name: String) -> JsonValue {
+    let rv = get_request(name);
     json!({
-        "text": rv,
+        "result": rv,
+    })
+}
+
+#[post("/<name>", data = "<data>")]
+fn process_post(name: String, data: Data) -> JsonValue {
+    let rv = post_request(name, data);
+    json!({
+        "result": rv,
     })
 }
 
 pub fn start_server() {
-    rocket::ignite().mount("/", routes![outgoing]).launch();
+    rocket::ignite()
+        .mount("/", routes![process_get, process_post])
+        .launch();
 }
