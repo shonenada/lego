@@ -7,6 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0"
 lazy_static = "1.4.0"
 log = "0.4"
 pretty_env_logger = "0.3"
@@ -15,12 +16,17 @@ serde = "1.0"
 serde_json = "1.0"
 serde_derive = "1.0"
 wasmer-as = { git = "https://github.com/onsails/wasmer-as" }
-wasmer-runtime = { git = "https://github.com/wasmerio/wasmer.git", tag = "0.14.1" }
-wasmer-runtime-core = { git = "https://github.com/wasmerio/wasmer.git", tag = "0.14.1" }
-wasmer-llvm-backend = { git = "https://github.com/wasmerio/wasmer.git", tag = "0.14.1" }
-wasmer-wasi = { git = "https://github.com/wasmerio/wasmer.git", tag = "0.14.1" }
+wasmer-clif-backend = { version = "0.17" }
+wasmer-llvm-backend = { version = "0.17", optional = true }
+wasmer-runtime = "0.17"
+wasmer-runtime-core = "0.17"
+wasmer-wasi = "0.17"
 
 [dependencies.rocket_contrib]
 version = "0.4.2"
 default-features = false
 features = ["json"]
+
+[features]
+backend-clif = [ ]
+backend-llvm = [ "wasmer-llvm-backend" ]

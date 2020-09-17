@@ -6,29 +6,7 @@ use std::sync::{Arc, RwLock};
 use std::time::SystemTime;
 
 use anyhow::Result;
-use wamser_runtime::{Compiler, Module};
-
-fn default_compiler() -> impl Compiler {
-    #[cfg(any(all(
-        feature = "backend-llvm",
-        feature = "backedn-clif",
-        not(feature = "docs")
-    )))]
-    compile_error!(
-        "The `wasmer-backend-X` features are mutually exclusive. Please choose just one"
-    );
-
-    #[cfg(all(feature = "backend-llvm"))]
-    use wasmer_llvm_backend::LLVMCompiler as DefaultCompiler;
-
-    #[cfg(any(feature = "backend-clif"))]
-    use wamser_clif_backend::CraneliftCompiler as DefaultCompiler;
-
-    #[cfg(all(not(feature = "backend-clif"), not(feature = "backend-llvm")))]
-    use wasmer_clif_backend::CraneliftCompiler as DefaultCompiler;
-
-    return DefaultCompiler::new();
-}
+use wasmer_runtime::{Compiler, Module};
 
 #[allow(dead_code)]
 pub struct WasmInfo {
